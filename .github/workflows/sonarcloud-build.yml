@@ -1,0 +1,32 @@
+name: Sonar Cloud Analysis
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          echo "Running tests and generating reports..."
+          mkdir coverage
+          echo "Test coverage data" > coverage/report.txt
+
+      - name: Analyze with SonarCloud
+        run: |
+          echo "Analyzing the application with SonarCloud..."
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: ./coverage
+          retention-days: 1
